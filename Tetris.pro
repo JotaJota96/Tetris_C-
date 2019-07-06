@@ -4,8 +4,10 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        Pieza.cpp \
         Tablero.cpp \
         main.cpp
 
 HEADERS += \
+	Pieza.h \
 	Tablero.h
