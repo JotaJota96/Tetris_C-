@@ -1,7 +1,16 @@
 #include <iostream>
 using namespace std;
 
-int main(){
+#include "Tablero.h"
 
-    return 0;
+int main(){
+    Tablero* t = new Tablero(10,5);
+    t->mostrar();
+    delete t;
+
 }
+
+
+
+
+
