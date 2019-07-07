@@ -16,7 +16,7 @@ public:
     ~Pieza();
 
     void mostrar();
-
+    void rotar();
 
 };
 

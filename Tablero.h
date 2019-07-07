@@ -13,7 +13,6 @@ public:
     ~Tablero();
 
     void mostrar();
-
 };
 
 #endif // TABLERO_H

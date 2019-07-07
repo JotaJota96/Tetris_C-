@@ -14,10 +14,16 @@ int main(){
      p[5] = new Pieza(O);
      p[6] = new Pieza(T);
 
+
      for (int i = 0; i < 7; i++){
-         p[i]->mostrar();
+         for (int j = 0; j < 4; j++){
+             p[i]->mostrar();
+             p[i]->rotar();
+             cout << endl;
+         }
          cout << "----------------"<< endl;
      }
+
 }
 
 

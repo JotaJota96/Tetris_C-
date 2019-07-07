@@ -58,7 +58,6 @@ Pieza::~Pieza(){
 
 }
 
-
 void Pieza::mostrar(){
     for (int i = 0; i < dimensiones; i++){
         for (int j = 0; j < dimensiones; j++){
@@ -71,5 +70,24 @@ void Pieza::mostrar(){
         cout << endl;
     }
 }
+
+
+void Pieza::rotar(){
+    int aux[dimensiones][dimensiones];
+
+    for (int i = 0; i < dimensiones; i++){
+        for (int j = 0; j < dimensiones; j++){
+            aux[i][j] = pieza[i][j];
+        }
+    }
+
+    for (int i = 0; i < dimensiones; i++){
+        for (int j = 0; j < dimensiones; j++){
+            pieza[j][dimensiones-1-i] = aux[i][j];
+        }
+    }
+}
+
+
 
 
