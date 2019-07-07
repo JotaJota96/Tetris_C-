@@ -1,6 +1,8 @@
 #include "Pieza.h"
 
+
 Pieza::Pieza(TipoPieza tp){
+    this->tipo = tp;
     switch (tp){
     case L:
         dimensiones = 3;
@@ -58,7 +60,12 @@ Pieza::~Pieza(){
 
 }
 
+
+
 void Pieza::mostrar(){
+    HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, this->tipo);
+
     for (int i = 0; i < dimensiones; i++){
         for (int j = 0; j < dimensiones; j++){
             if (pieza[i][j] == 1){
@@ -69,6 +76,7 @@ void Pieza::mostrar(){
         }
         cout << endl;
     }
+    SetConsoleTextAttribute(hConsole, 15);
 }
 
 

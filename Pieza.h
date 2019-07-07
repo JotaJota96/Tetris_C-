@@ -1,16 +1,25 @@
 #ifndef PIEZA_H
 #define PIEZA_H
 #include <iostream>
+#include <windows.h>
 using namespace std;
 
 #define C 219
 // Notacion al final de este archivo
-enum TipoPieza {L, J, Z, S, I, O, T};
+// El numero asociado al elemento es el color correspondiente a la pieza
+enum TipoPieza {L = 2,
+                J = 1,
+                Z = 5,
+                S = 6,
+                I = 3,
+                O = 4,
+                T = 11};
 
 class Pieza{
 private:
     int** pieza;
     int dimensiones;
+    TipoPieza tipo;
 public:
     Pieza(TipoPieza tp);
     ~Pieza();
