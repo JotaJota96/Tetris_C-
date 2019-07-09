@@ -4,7 +4,7 @@
 #include <windows.h>
 using namespace std;
 
-#define C 219
+#define CHAR_PIEZA 219
 // Notacion al final de este archivo
 // El numero asociado al elemento es el color correspondiente a la pieza
 enum TipoPieza {L = 2,
@@ -15,17 +15,23 @@ enum TipoPieza {L = 2,
                 O = 4,
                 T = 11};
 
+
+
 class Pieza{
 private:
-    int** pieza;
+    bool** pieza;
     int dimensiones;
     TipoPieza tipo;
 public:
     Pieza(TipoPieza tp);
     ~Pieza();
 
-    void mostrar();
+    TipoPieza getTipo();
+    int getDimensiones();
+    int getColor();
+
     void rotar();
+    bool existeEn(int x, int y);
 
 };
 

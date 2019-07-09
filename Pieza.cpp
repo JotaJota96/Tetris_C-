@@ -6,52 +6,52 @@ Pieza::Pieza(TipoPieza tp){
     switch (tp){
     case L:
         dimensiones = 3;
-        pieza = new int*[dimensiones];
-        pieza[0] = new int[dimensiones]{0,1,0};
-        pieza[1] = new int[dimensiones]{0,1,0};
-        pieza[2] = new int[dimensiones]{0,1,1};
+        pieza = new bool*[dimensiones];
+        pieza[0] = new bool[dimensiones]{0,1,0};
+        pieza[1] = new bool[dimensiones]{0,1,0};
+        pieza[2] = new bool[dimensiones]{0,1,1};
         break;
     case J:
         dimensiones = 3;
-        pieza = new int*[dimensiones];
-        pieza[0] = new int[dimensiones]{0,1,0};
-        pieza[1] = new int[dimensiones]{0,1,0};
-        pieza[2] = new int[dimensiones]{1,1,0};
+        pieza = new bool*[dimensiones];
+        pieza[0] = new bool[dimensiones]{0,1,0};
+        pieza[1] = new bool[dimensiones]{0,1,0};
+        pieza[2] = new bool[dimensiones]{1,1,0};
         break;
     case Z:
         dimensiones = 3;
-        pieza = new int*[dimensiones];
-        pieza[0] = new int[dimensiones]{1,1,0};
-        pieza[1] = new int[dimensiones]{0,1,1};
-        pieza[2] = new int[dimensiones]{0,0,0};
+        pieza = new bool*[dimensiones];
+        pieza[0] = new bool[dimensiones]{1,1,0};
+        pieza[1] = new bool[dimensiones]{0,1,1};
+        pieza[2] = new bool[dimensiones]{0,0,0};
         break;
     case S:
         dimensiones = 3;
-        pieza = new int*[dimensiones];
-        pieza[0] = new int[dimensiones]{0,1,1};
-        pieza[1] = new int[dimensiones]{1,1,0};
-        pieza[2] = new int[dimensiones]{0,0,0};
+        pieza = new bool*[dimensiones];
+        pieza[0] = new bool[dimensiones]{0,1,1};
+        pieza[1] = new bool[dimensiones]{1,1,0};
+        pieza[2] = new bool[dimensiones]{0,0,0};
         break;
     case I:
         dimensiones = 4;
-        pieza = new int*[dimensiones];
-        pieza[0] = new int[dimensiones]{0,0,0,0};
-        pieza[1] = new int[dimensiones]{1,1,1,1};
-        pieza[2] = new int[dimensiones]{0,0,0,0};
-        pieza[3] = new int[dimensiones]{0,0,0,0};
+        pieza = new bool*[dimensiones];
+        pieza[0] = new bool[dimensiones]{0,0,0,0};
+        pieza[1] = new bool[dimensiones]{1,1,1,1};
+        pieza[2] = new bool[dimensiones]{0,0,0,0};
+        pieza[3] = new bool[dimensiones]{0,0,0,0};
         break;
     case O:
         dimensiones = 2;
-        pieza = new int*[dimensiones];
-        pieza[0] = new int[dimensiones]{1,1};
-        pieza[1] = new int[dimensiones]{1,1};
+        pieza = new bool*[dimensiones];
+        pieza[0] = new bool[dimensiones]{1,1};
+        pieza[1] = new bool[dimensiones]{1,1};
         break;
     case T:
         dimensiones = 3;
-        pieza = new int*[dimensiones];
-        pieza[0] = new int[dimensiones]{1,1,1};
-        pieza[1] = new int[dimensiones]{0,1,0};
-        pieza[2] = new int[dimensiones]{0,0,0};
+        pieza = new bool*[dimensiones];
+        pieza[0] = new bool[dimensiones]{1,1,1};
+        pieza[1] = new bool[dimensiones]{0,1,0};
+        pieza[2] = new bool[dimensiones]{0,0,0};
         break;
     }
 }
@@ -60,8 +60,17 @@ Pieza::~Pieza(){
 
 }
 
+TipoPieza Pieza::getTipo(){
+    return this->tipo;
+}
+int Pieza::getDimensiones(){
+    return this->dimensiones;
+}
+int Pieza::getColor(){
+    return this->tipo;
+}
 
-
+/*
 void Pieza::mostrar(){
     HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, this->tipo);
@@ -78,8 +87,7 @@ void Pieza::mostrar(){
     }
     SetConsoleTextAttribute(hConsole, 15);
 }
-
-
+*/
 void Pieza::rotar(){
     int aux[dimensiones][dimensiones];
 
@@ -96,6 +104,8 @@ void Pieza::rotar(){
     }
 }
 
-
+bool Pieza::existeEn(int x, int y){
+    return this->pieza[y][x];
+}
 
 
