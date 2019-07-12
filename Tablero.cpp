@@ -8,11 +8,11 @@ Tablero::Tablero(const int _alto, const int _ancho){
     this->pieza = NULL;
     this->cxy = new Coordenada();
 
-    tablero = new bool*[alto];
+    tablero = new int*[alto];
     for (int i = 0; i < alto; i++){
-        tablero[i] = new bool[ancho];
+        tablero[i] = new int[ancho];
         for (int j = 0; j < ancho; j++){
-            tablero[i][j] = false;
+            tablero[i][j] = 0;
         }
     }
     srand(time(NULL));
@@ -28,6 +28,17 @@ Tablero::~Tablero(){
 
 Coordenada* Tablero::getCoordenada(){
     return this->cxy;
+}
+
+int Tablero::getAlto(){
+    return alto;
+}
+int Tablero::getAncho(){
+    return ancho;
+}
+
+int Tablero::get(int x, int y){
+    return tablero[y][x];
 }
 
 Pieza* Tablero::getPieza(){
@@ -59,6 +70,42 @@ void Tablero::nuevaPieza(){
 void Tablero::bajarPieza(){
     this->cxy->down();
 }
+
+void Tablero::fijarPieza(){
+    for (int y = 0; y < pieza->getDimensiones(); y++){
+        for (int x = 0; x < pieza->getDimensiones(); x++){
+            if (pieza->existeEn(x, y)){
+                tablero[cxy->getY() + y][cxy->getX() + x] = pieza->getColor();
+            }
+        }
+    }
+    delete pieza;
+    pieza = NULL;
+}
+
+bool Tablero::piezaPuedeBajar(){
+    for (int y = pieza->getDimensiones()-1; y >=0 ; y--){
+        for (int x = 0; x < pieza->getDimensiones(); x++){
+            if (pieza->existeEn(x, y)){
+                if (cxy->getY() + y + 1 == alto ||
+                        tablero[cxy->getY() + y + 1][cxy->getX() + x] != 0){
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+void Tablero::eliminarUltimaFila(){
+    for (int y = alto-2; y >= 0; y--){
+        for (int x = 0; x < ancho; x++){
+            tablero[y+1][x] = tablero[y][x];
+        }
+    }
+}
+
+
 
 
 
