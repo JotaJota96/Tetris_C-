@@ -13,6 +13,7 @@ private:
     int ancho;
     Pieza* pieza;
     Coordenada* cxy;
+    int tipoPiezaAnterior;
 public:
     Tablero(const int _alto, const int _ancho);
     ~Tablero();
@@ -22,10 +23,14 @@ public:
     int getAncho();
     Pieza* getPieza();
     Coordenada* getCoordenada();
-    void nuevaPieza();
+    bool nuevaPieza();
     void bajarPieza();
     void fijarPieza();
     bool piezaPuedeBajar();
+    bool piezaPuedeExistir();
+    bool piezaPuedeIrALaIzquierda();
+    bool piezaPuedeIrALaDerecha();
+    void piezaRotar(bool sentidoHorario);
     void eliminarUltimaFila();
 };
 

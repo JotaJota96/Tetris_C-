@@ -7,6 +7,7 @@ Tablero::Tablero(const int _alto, const int _ancho){
     this->ancho = _ancho;
     this->pieza = NULL;
     this->cxy = new Coordenada();
+    tipoPiezaAnterior = -1;
 
     tablero = new int*[alto];
     for (int i = 0; i < alto; i++){
@@ -45,7 +46,7 @@ Pieza* Tablero::getPieza(){
     return this->pieza;
 }
 
-void Tablero::nuevaPieza(){
+bool Tablero::nuevaPieza(){
     if (this->pieza != NULL){
         delete this->pieza;
     }
@@ -53,7 +54,12 @@ void Tablero::nuevaPieza(){
         this->cxy = new Coordenada();
     }
 
-    switch (rand()%7) {
+    int nueva;
+    do {
+        nueva = rand()%7;
+    }while (nueva == tipoPiezaAnterior);
+
+    switch (nueva) {
     case 0: this->pieza = new Pieza(L); break;
     case 1: this->pieza = new Pieza(J); break;
     case 2: this->pieza = new Pieza(Z); break;
@@ -65,6 +71,12 @@ void Tablero::nuevaPieza(){
 
     this->cxy->setX(ancho /2 - this->pieza->getDimensiones() /2);
     this->cxy->setY(0);
+
+    if ( ! piezaPuedeExistir()){
+        delete pieza;
+        return false;
+    }
+    return true;
 }
 
 void Tablero::bajarPieza(){
@@ -96,6 +108,72 @@ bool Tablero::piezaPuedeBajar(){
     }
     return true;
 }
+bool Tablero::piezaPuedeExistir(){
+    for (int y = pieza->getDimensiones()-1; y >=0 ; y--){
+        for (int x = 0; x < pieza->getDimensiones(); x++){
+            if (pieza->existeEn(x, y)){
+                if (cxy->getY() + y + 1 == alto ||
+                        tablero[cxy->getY() + y][cxy->getX() + x] != 0){
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+bool Tablero::piezaPuedeIrALaIzquierda(){
+    for (int x = 0; x < pieza->getDimensiones(); x++){
+        for (int y = 0; y < pieza->getDimensiones(); y++){
+            if (pieza->existeEn(x, y)){
+                if (cxy->getX() + x - 1 < 0){
+                    return false;
+                }
+                if (tablero[cxy->getY() + y][cxy->getX()+x-1] != 0){
+                    return false;
+                }
+            }
+        }
+    }
+    cxy->left();
+    return true;
+}
+bool Tablero::piezaPuedeIrALaDerecha(){
+    for (int x = 0; x < pieza->getDimensiones(); x++){
+        for (int y = 0; y < pieza->getDimensiones(); y++){
+            if (pieza->existeEn(x, y)){
+                if (cxy->getX() + x + 1 > ancho-1){
+                    return false;
+                }
+                if (tablero[cxy->getY() + y][cxy->getX()+x+1] != 0){
+                    return false;
+                }
+            }
+        }
+    }
+    cxy->right();
+    return true;
+}
+
+
+
+void Tablero::piezaRotar(bool sentidoHorario){
+    if (sentidoHorario){
+        pieza->rotar();
+        if ( ! piezaPuedeExistir()){
+            pieza->rotar();
+            pieza->rotar();
+            pieza->rotar();
+        }
+    }else{
+        pieza->rotar();
+        pieza->rotar();
+        pieza->rotar();
+        if ( ! piezaPuedeExistir()){
+            pieza->rotar();
+        }
+    }
+}
+
 
 void Tablero::eliminarUltimaFila(){
     for (int y = alto-2; y >= 0; y--){

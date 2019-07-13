@@ -24,19 +24,33 @@ Juego::Juego(){
 
 void Juego::pruebas(){
     tablero->nuevaPieza();
+    OcultarCursor();
 
-    for (int i = 0; i < 30; i++){
+    for (int i = 0; i < 150; i++){
+
+        if ((i) % 4 == 0){
+            tablero->piezaRotar(i % 2 == 0);
+        }
+
         dibujarPieza();
-        Sleep(500);
+        Sleep(50);
         if (tablero->piezaPuedeBajar()){
             borrarPieza();
             tablero->bajarPieza();
         }else{
             tablero->fijarPieza();
-            tablero->eliminarUltimaFila();
-            mostrarTablero();
-            tablero->nuevaPieza();
+            //tablero->eliminarUltimaFila();
+            //mostrarTablero();
+            if ( ! tablero->nuevaPieza()){
+                mostrarGameOver();
+                return;
+            }
         }
+
+        if ((i+1) % 3 == 0){
+            tablero->piezaPuedeIrALaDerecha();
+        }
+
     }
 
 }
@@ -58,7 +72,7 @@ void Juego::dibujarPieza(){
         }
     }
 
-
+    GoToXY(0, BORDE_INFERIOR+1);
     SetConsoleTextAttribute(hConsole, 15);
 }
 
@@ -75,6 +89,7 @@ void Juego::borrarPieza(){
             }
         }
     }
+    GoToXY(0, BORDE_INFERIOR+1);
 }
 
 void Juego::mostrarTablero(){
@@ -94,8 +109,17 @@ void Juego::mostrarTablero(){
         }
     }
     SetConsoleTextAttribute(hConsole, 15);
+    GoToXY(0, BORDE_INFERIOR+1);
 }
 
+void Juego::mostrarGameOver(){
+    HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, 4);
+    GoToXY(BORDE_IZQUIERDO+2+(ANCHO/2)*2-5, BORDE_SUPERIOR+1+(ALTO/2)-1);
+    printf(" GAME OVER ");
+    SetConsoleTextAttribute(hConsole, 15);
+    GoToXY(0, BORDE_INFERIOR+1);
+}
 
 
 //---------------------------------------------------------------------------------

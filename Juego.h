@@ -7,8 +7,8 @@ using namespace std;
 #include "Tablero.h"
 
 
-#define ANCHO           7
-#define ALTO            10
+#define ANCHO           12
+#define ALTO            16
 #define BORDE_SUPERIOR  1
 #define BORDE_INFERIOR BORDE_SUPERIOR + ALTO + 1
 #define BORDE_IZQUIERDO 2
@@ -29,6 +29,7 @@ public:
     void OcultarCursor();
 
     void mostrarTablero();
+    void mostrarGameOver();
 
 };
 

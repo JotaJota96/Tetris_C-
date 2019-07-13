@@ -57,7 +57,10 @@ Pieza::Pieza(TipoPieza tp){
 }
 
 Pieza::~Pieza(){
-
+    for (int i = 0; i < dimensiones; i++){
+        delete pieza[i];
+    }
+    delete pieza;
 }
 
 TipoPieza Pieza::getTipo(){
@@ -70,24 +73,6 @@ int Pieza::getColor(){
     return this->tipo;
 }
 
-/*
-void Pieza::mostrar(){
-    HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, this->tipo);
-
-    for (int i = 0; i < dimensiones; i++){
-        for (int j = 0; j < dimensiones; j++){
-            if (pieza[i][j] == 1){
-                printf("%c%c", C,C);
-            }else{
-                printf("  ");
-            }
-        }
-        cout << endl;
-    }
-    SetConsoleTextAttribute(hConsole, 15);
-}
-*/
 void Pieza::rotar(){
     int aux[dimensiones][dimensiones];
 
