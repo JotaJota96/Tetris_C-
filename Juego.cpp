@@ -26,6 +26,58 @@ void Juego::pruebas(){
     tablero->nuevaPieza();
     OcultarCursor();
 
+    dibujarPieza();
+
+    while (true){
+        if (kbhit()){
+            char tecla = getch();
+
+            if (tecla == -32) continue;
+
+            switch (tecla) {
+            case FLECHA_ABAJO:
+                if (tablero->piezaPuedeBajar()){
+                    borrarPieza();
+                    tablero->bajarPieza();
+                    dibujarPieza();
+                }else{
+                    tablero->fijarPieza();
+                    //tablero->eliminarUltimaFila();
+                    //mostrarTablero();
+                    if ( ! tablero->nuevaPieza()){
+                        mostrarGameOver();
+                        return;
+                    }
+                    dibujarPieza();
+                }
+                break;
+            case FLECHA_ARRIBA:
+                break;
+            case FLECHA_DERECHA:
+                borrarPieza();
+                tablero->piezaPuedeIrALaDerecha();
+                dibujarPieza();
+                break;
+            case FLECHA_IZQUIERDA:
+                borrarPieza();
+                tablero->piezaPuedeIrALaIzquierda();
+                dibujarPieza();
+                break;
+            case TECLA_ESPACIO:
+                borrarPieza();
+                tablero->piezaRotar(true);
+                dibujarPieza();
+                break;
+            }
+
+
+        }
+    }
+
+
+
+
+
     for (int i = 0; i < 150; i++){
 
         if ((i) % 4 == 0){

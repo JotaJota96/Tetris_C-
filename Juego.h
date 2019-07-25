@@ -2,6 +2,7 @@
 #define JUEGO_H
 #include <iostream>
 #include <windows.h>
+#include <conio.h>
 using namespace std;
 
 #include "Tablero.h"
@@ -13,6 +14,13 @@ using namespace std;
 #define BORDE_INFERIOR BORDE_SUPERIOR + ALTO + 1
 #define BORDE_IZQUIERDO 2
 #define BORDE_DERECHO   BORDE_IZQUIERDO + (ANCHO*2) +2
+
+#define FLECHA_ARRIBA    72
+#define FLECHA_ABAJO     80
+#define FLECHA_DERECHA   77
+#define FLECHA_IZQUIERDA 75
+#define TECLA_ESPACIO    32
+
 
 class Juego{
 private:
