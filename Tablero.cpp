@@ -59,6 +59,8 @@ bool Tablero::nuevaPieza(){
         nueva = rand()%7;
     }while (nueva == tipoPiezaAnterior);
 
+    tipoPiezaAnterior = nueva;
+
     switch (nueva) {
     case 0: this->pieza = new Pieza(L); break;
     case 1: this->pieza = new Pieza(J); break;
@@ -113,6 +115,8 @@ bool Tablero::piezaPuedeExistir(){
         for (int x = 0; x < pieza->getDimensiones(); x++){
             if (pieza->existeEn(x, y)){
                 if (cxy->getY() + y + 1 == alto ||
+                        cxy->getX() + x == -1 ||
+                        cxy->getX() + x == ancho ||
                         tablero[cxy->getY() + y][cxy->getX() + x] != 0){
                     return false;
                 }
@@ -138,7 +142,7 @@ bool Tablero::piezaPuedeIrALaIzquierda(){
     return true;
 }
 bool Tablero::piezaPuedeIrALaDerecha(){
-    for (int x = 0; x < pieza->getDimensiones(); x++){
+    for (int x = pieza->getDimensiones()-1; x >= 0 ; x--){
         for (int y = 0; y < pieza->getDimensiones(); y++){
             if (pieza->existeEn(x, y)){
                 if (cxy->getX() + x + 1 > ancho-1){
@@ -153,8 +157,6 @@ bool Tablero::piezaPuedeIrALaDerecha(){
     cxy->right();
     return true;
 }
-
-
 
 void Tablero::piezaRotar(bool sentidoHorario){
     if (sentidoHorario){
@@ -175,13 +177,26 @@ void Tablero::piezaRotar(bool sentidoHorario){
 }
 
 
-void Tablero::eliminarUltimaFila(){
-    for (int y = alto-2; y >= 0; y--){
-        for (int x = 0; x < ancho; x++){
-            tablero[y+1][x] = tablero[y][x];
+void Tablero::eliminarFilasCompletas(){
+    bool sePuedeBorrar;
+    for (int y = alto-1; y > 0; y--){
+        sePuedeBorrar = true;
+        for (int x = 0; sePuedeBorrar && x < ancho; x++){
+            sePuedeBorrar = tablero[y][x];
         }
+
+        if (sePuedeBorrar){
+            for (int i = y; i > 0; i--){
+                for (int j = 0; j < ancho; j++){
+                    tablero[i][j] = tablero[i-1][j];
+                }
+            }
+            y++;
+        }
+
     }
 }
+
 
 
 

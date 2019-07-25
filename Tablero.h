@@ -31,7 +31,7 @@ public:
     bool piezaPuedeIrALaIzquierda();
     bool piezaPuedeIrALaDerecha();
     void piezaRotar(bool sentidoHorario);
-    void eliminarUltimaFila();
+    void eliminarFilasCompletas();
 };
 
 #endif // TABLERO_H

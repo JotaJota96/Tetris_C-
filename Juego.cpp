@@ -42,8 +42,10 @@ void Juego::pruebas(){
                     dibujarPieza();
                 }else{
                     tablero->fijarPieza();
-                    //tablero->eliminarUltimaFila();
-                    //mostrarTablero();
+
+                    tablero->eliminarFilasCompletas();
+                    mostrarTablero();
+
                     if ( ! tablero->nuevaPieza()){
                         mostrarGameOver();
                         return;
@@ -52,6 +54,29 @@ void Juego::pruebas(){
                 }
                 break;
             case FLECHA_ARRIBA:
+                while (true){
+                    if (tablero->piezaPuedeBajar()){
+                        borrarPieza();
+                        tablero->bajarPieza();
+                        dibujarPieza();
+                    }else{
+                        tablero->fijarPieza();
+
+                        tablero->eliminarFilasCompletas();
+                        mostrarTablero();
+
+                        if ( ! tablero->nuevaPieza()){
+                            mostrarGameOver();
+                            return;
+                        }
+                        dibujarPieza();
+                        break;
+                    }
+                }
+
+                //borrarPieza();
+                //tablero->piezaRotar(false);
+                //dibujarPieza();
                 break;
             case FLECHA_DERECHA:
                 borrarPieza();
@@ -70,41 +95,8 @@ void Juego::pruebas(){
                 break;
             }
 
-
         }
     }
-
-
-
-
-
-    for (int i = 0; i < 150; i++){
-
-        if ((i) % 4 == 0){
-            tablero->piezaRotar(i % 2 == 0);
-        }
-
-        dibujarPieza();
-        Sleep(50);
-        if (tablero->piezaPuedeBajar()){
-            borrarPieza();
-            tablero->bajarPieza();
-        }else{
-            tablero->fijarPieza();
-            //tablero->eliminarUltimaFila();
-            //mostrarTablero();
-            if ( ! tablero->nuevaPieza()){
-                mostrarGameOver();
-                return;
-            }
-        }
-
-        if ((i+1) % 3 == 0){
-            tablero->piezaPuedeIrALaDerecha();
-        }
-
-    }
-
 }
 
 void Juego::dibujarPieza(){

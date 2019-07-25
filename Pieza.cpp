@@ -49,9 +49,9 @@ Pieza::Pieza(TipoPieza tp){
     case T:
         dimensiones = 3;
         pieza = new bool*[dimensiones];
-        pieza[0] = new bool[dimensiones]{1,1,1};
-        pieza[1] = new bool[dimensiones]{0,1,0};
-        pieza[2] = new bool[dimensiones]{0,0,0};
+        pieza[0] = new bool[dimensiones]{0,0,0};
+        pieza[1] = new bool[dimensiones]{1,1,1};
+        pieza[2] = new bool[dimensiones]{0,1,0};
         break;
     }
 }
