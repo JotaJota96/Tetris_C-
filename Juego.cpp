@@ -35,7 +35,16 @@ void Juego::pruebas(){
             if (tecla == -32) continue;
 
             switch (tecla) {
+            case FLECHA_ARRIBA:
+                borrarPieza();
+                tablero->piezaPuedeIrAArriba();
+                dibujarPieza();
+                break;
             case FLECHA_ABAJO:
+                borrarPieza();
+                tablero->piezaPuedeIrAAbajo();
+                dibujarPieza();
+                /*
                 if (tablero->piezaPuedeBajar()){
                     borrarPieza();
                     tablero->bajarPieza();
@@ -52,8 +61,40 @@ void Juego::pruebas(){
                     }
                     dibujarPieza();
                 }
+                */
                 break;
-            case FLECHA_ARRIBA:
+            case FLECHA_DERECHA:
+                borrarPieza();
+                tablero->piezaPuedeIrALaDerecha();
+                dibujarPieza();
+                break;
+            case FLECHA_IZQUIERDA:
+                borrarPieza();
+                tablero->piezaPuedeIrALaIzquierda();
+                dibujarPieza();
+                break;
+            case TECLA_ROTAR_DERECHA:
+                borrarPieza();
+                tablero->piezaRotar(true);
+                dibujarPieza();
+                break;
+            case TECLA_ROTAR_iZQUIERDA:
+                borrarPieza();
+                tablero->piezaRotar(false);
+                dibujarPieza();
+                break;
+            case TECLA_FIJAR_PIEZA:
+                tablero->fijarPieza();
+                tablero->eliminarFilasCompletas();
+                mostrarTablero();
+
+                if ( ! tablero->nuevaPieza()){
+                    mostrarGameOver();
+                    return;
+                }
+                dibujarPieza();
+
+                /*
                 while (true){
                     if (tablero->piezaPuedeBajar()){
                         borrarPieza();
@@ -73,28 +114,9 @@ void Juego::pruebas(){
                         break;
                     }
                 }
-
-                //borrarPieza();
-                //tablero->piezaRotar(false);
-                //dibujarPieza();
-                break;
-            case FLECHA_DERECHA:
-                borrarPieza();
-                tablero->piezaPuedeIrALaDerecha();
-                dibujarPieza();
-                break;
-            case FLECHA_IZQUIERDA:
-                borrarPieza();
-                tablero->piezaPuedeIrALaIzquierda();
-                dibujarPieza();
-                break;
-            case TECLA_ESPACIO:
-                borrarPieza();
-                tablero->piezaRotar(true);
-                dibujarPieza();
+                */
                 break;
             }
-
         }
     }
 }

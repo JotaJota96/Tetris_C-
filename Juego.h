@@ -7,7 +7,7 @@ using namespace std;
 
 #include "Tablero.h"
 
-
+// Parametros del tablero de juego
 #define ANCHO           12
 #define ALTO            16
 #define BORDE_SUPERIOR  1
@@ -15,11 +15,15 @@ using namespace std;
 #define BORDE_IZQUIERDO 2
 #define BORDE_DERECHO   BORDE_IZQUIERDO + (ANCHO*2) +2
 
-#define FLECHA_ARRIBA    72
-#define FLECHA_ABAJO     80
-#define FLECHA_DERECHA   77
-#define FLECHA_IZQUIERDA 75
-#define TECLA_ESPACIO    32
+// Teclas de interaccion
+#define FLECHA_ARRIBA         72
+#define FLECHA_ABAJO          80
+#define FLECHA_DERECHA        77
+#define FLECHA_IZQUIERDA      75
+#define TECLA_ROTAR_iZQUIERDA 97
+#define TECLA_ROTAR_DERECHA  100
+#define TECLA_FIJAR_PIEZA     115
+#define TECLA_CAMBIAR_PIEZA   119
 
 
 class Juego{

@@ -34,6 +34,7 @@ Coordenada* Tablero::getCoordenada(){
 int Tablero::getAlto(){
     return alto;
 }
+
 int Tablero::getAncho(){
     return ancho;
 }
@@ -81,10 +82,6 @@ bool Tablero::nuevaPieza(){
     return true;
 }
 
-void Tablero::bajarPieza(){
-    this->cxy->down();
-}
-
 void Tablero::fijarPieza(){
     for (int y = 0; y < pieza->getDimensiones(); y++){
         for (int x = 0; x < pieza->getDimensiones(); x++){
@@ -97,6 +94,7 @@ void Tablero::fijarPieza(){
     pieza = NULL;
 }
 
+///////////////////////////////////////////////////////////////////////////////////
 bool Tablero::piezaPuedeBajar(){
     for (int y = pieza->getDimensiones()-1; y >=0 ; y--){
         for (int x = 0; x < pieza->getDimensiones(); x++){
@@ -110,13 +108,15 @@ bool Tablero::piezaPuedeBajar(){
     }
     return true;
 }
+
 bool Tablero::piezaPuedeExistir(){
-    for (int y = pieza->getDimensiones()-1; y >=0 ; y--){
+    for (int y = 0; y < pieza->getDimensiones(); y++){
         for (int x = 0; x < pieza->getDimensiones(); x++){
             if (pieza->existeEn(x, y)){
-                if (cxy->getY() + y + 1 == alto ||
-                        cxy->getX() + x == -1 ||
-                        cxy->getX() + x == ancho ||
+                if (cxy->getY() + y >= alto ||
+                        cxy->getY() + y < 0 ||
+                        cxy->getX() + x < 0 ||
+                        cxy->getX() + x >= ancho ||
                         tablero[cxy->getY() + y][cxy->getX() + x] != 0){
                     return false;
                 }
@@ -125,6 +125,42 @@ bool Tablero::piezaPuedeExistir(){
     }
     return true;
 }
+
+///////////////////////////////////////////////////////////////////////////////////
+bool Tablero::piezaPuedeIrAArriba(){
+    for (int x = 0; x < pieza->getDimensiones(); x++){
+        for (int y = 0; y < pieza->getDimensiones(); y++){
+            if (pieza->existeEn(x, y)){
+                if (cxy->getY() + y - 1 < 0){
+                    return false;
+                }
+                if (tablero[cxy->getY() + y -1][cxy->getX()+x] != 0){
+                    return false;
+                }
+            }
+        }
+    }
+    cxy->up();
+    return true;
+}
+
+bool Tablero::piezaPuedeIrAAbajo(){
+    for (int x = 0; x < pieza->getDimensiones(); x++){
+        for (int y = 0; y < pieza->getDimensiones(); y++){
+            if (pieza->existeEn(x, y)){
+                if (cxy->getY() + y + 1 >= alto){
+                    return false;
+                }
+                if (tablero[cxy->getY() + y +1][cxy->getX()+x] != 0){
+                    return false;
+                }
+            }
+        }
+    }
+    cxy->down();
+    return true;
+}
+
 bool Tablero::piezaPuedeIrALaIzquierda(){
     for (int x = 0; x < pieza->getDimensiones(); x++){
         for (int y = 0; y < pieza->getDimensiones(); y++){
@@ -141,6 +177,7 @@ bool Tablero::piezaPuedeIrALaIzquierda(){
     cxy->left();
     return true;
 }
+
 bool Tablero::piezaPuedeIrALaDerecha(){
     for (int x = pieza->getDimensiones()-1; x >= 0 ; x--){
         for (int y = 0; y < pieza->getDimensiones(); y++){
@@ -158,6 +195,7 @@ bool Tablero::piezaPuedeIrALaDerecha(){
     return true;
 }
 
+///////////////////////////////////////////////////////////////////////////////////
 void Tablero::piezaRotar(bool sentidoHorario){
     if (sentidoHorario){
         pieza->rotar();
@@ -176,7 +214,6 @@ void Tablero::piezaRotar(bool sentidoHorario){
     }
 }
 
-
 void Tablero::eliminarFilasCompletas(){
     bool sePuedeBorrar;
     for (int y = alto-1; y > 0; y--){
@@ -190,6 +227,9 @@ void Tablero::eliminarFilasCompletas(){
                 for (int j = 0; j < ancho; j++){
                     tablero[i][j] = tablero[i-1][j];
                 }
+            }
+            for (int j = 0; j < ancho; j++){
+                tablero[0][j] = 0;
             }
             y++;
         }

@@ -26,10 +26,15 @@ public:
     bool nuevaPieza();
     void bajarPieza();
     void fijarPieza();
+
     bool piezaPuedeBajar();
     bool piezaPuedeExistir();
+
+    bool piezaPuedeIrAArriba();
+    bool piezaPuedeIrAAbajo();
     bool piezaPuedeIrALaIzquierda();
     bool piezaPuedeIrALaDerecha();
+
     void piezaRotar(bool sentidoHorario);
     void eliminarFilasCompletas();
 };
