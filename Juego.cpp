@@ -5,6 +5,7 @@ Juego::Juego(){
     this->posTablero = new Coordenada(BORDE_IZQUIERDO+2,BORDE_SUPERIOR+1);
 
     OcultarCursor();
+    cambiarColor(15);
 
     GoToXY(BORDE_IZQUIERDO, BORDE_SUPERIOR); printf(" %c", 220);
     GoToXY(BORDE_DERECHO,   BORDE_SUPERIOR); printf("%c ", 220);
@@ -23,10 +24,12 @@ Juego::Juego(){
 }
 
 void Juego::jugarPartida(){
+    int puntuacion = 0;
     tablero->nuevaPieza();
     OcultarCursor();
 
     dibujarPieza();
+    mostrarPuntaje(puntuacion);
 
     while (true){
         if (kbhit()){
@@ -56,9 +59,25 @@ void Juego::jugarPartida(){
                 tablero->piezaRotar(false);
                 break;
             case TECLA_FIJAR_PIEZA:
+                dibujarPieza();
                 tablero->fijarPieza();
-                tablero->eliminarFilasCompletas();
-                mostrarTablero();
+
+                int lineasEliminadas = tablero->eliminarFilasCompletas();
+                /* incremento de puntaje por lineas eliminadas
+                 * si se elimina  1 linea:  +2
+                 * si se eliminan 2 lineas: +5
+                 * si se eliminan 3 lineas: +8
+                 * si se eliminan 4 lineas: +13
+                 *
+                 * Se puede generalizar con la formula:
+                 * f(n) = 2n + n - 1
+                 * */
+                if (lineasEliminadas != 0){
+                    puntuacion += lineasEliminadas *2 + lineasEliminadas -1;
+                    mostrarTablero();
+                    mostrarPuntaje(puntuacion);
+                }
+
 
                 if ( ! tablero->nuevaPieza()){
                     mostrarGameOver();
@@ -71,13 +90,13 @@ void Juego::jugarPartida(){
     }
 }
 
+////////////////////////////////////////////////////////////////////
 void Juego::dibujarPieza(){
     Coordenada* pCord = this->tablero->getCoordenada();
     Pieza* p = this->tablero->getPieza();
     int dimPieza = p->getDimensiones();
 
-    HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, p->getTipo());
+    cambiarColor(p->getTipo());
 
     for (int y = 0; y < dimPieza; y++){
         for (int x = 0; x < dimPieza; x++){
@@ -89,7 +108,7 @@ void Juego::dibujarPieza(){
     }
 
     GoToXY(0, BORDE_INFERIOR+1);
-    SetConsoleTextAttribute(hConsole, 15);
+    cambiarColor(15);
 }
 
 void Juego::borrarPieza(){
@@ -108,15 +127,14 @@ void Juego::borrarPieza(){
     GoToXY(0, BORDE_INFERIOR+1);
 }
 
+////////////////////////////////////////////////////////////////////
 void Juego::mostrarTablero(){
-    HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
     for (int y = tablero->getAlto()-1; y >= 0; y--){
     //for (int y = 0; y < tablero->getAlto(); y++){
         for (int x = 0; x < tablero->getAncho(); x++){
             GoToXY(posTablero->getX()+(x*2), posTablero->getY()+y);
             if (tablero->get(x,y) != 0){
-                SetConsoleTextAttribute(hConsole, static_cast<WORD>(tablero->get(x,y)));
+                cambiarColor(tablero->get(x,y));
                 printf("%c%c", 219, 219);
                 //Sleep(20);
             }else{
@@ -124,21 +142,26 @@ void Juego::mostrarTablero(){
             }
         }
     }
-    SetConsoleTextAttribute(hConsole, 15);
+    cambiarColor(15);
     GoToXY(0, BORDE_INFERIOR+1);
 }
 
 void Juego::mostrarGameOver(){
-    HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, 4);
+    cambiarColor(4);
     GoToXY(BORDE_IZQUIERDO+2+(ANCHO/2)*2-5, BORDE_SUPERIOR+1+(ALTO/2)-1);
     printf(" GAME OVER ");
-    SetConsoleTextAttribute(hConsole, 15);
+    cambiarColor(15);
     GoToXY(0, BORDE_INFERIOR+1);
 }
 
+void Juego::mostrarPuntaje(int puntaje){
+    cambiarColor(15);
+    GoToXY(BORDE_DERECHO+3, BORDE_SUPERIOR+1);
+    printf("Puntaje: %d", puntaje);
+    GoToXY(0, BORDE_INFERIOR+1);
+}
 
-//---------------------------------------------------------------------------------
+////////////////////////////////////////////////////////////////////
 void Juego::GoToXY(int x, int y){		// Coloca el cursor en la ordenada indicada
     HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD dwPos;
@@ -152,5 +175,10 @@ void Juego::OcultarCursor(){			// Oculta el cursor
     cci.dwSize = 2;
     cci.bVisible = FALSE;
     SetConsoleCursorInfo(hCon, &cci);
+}
+void Juego::cambiarColor(int color){
+    // Necesita #include <windows.h>
+    HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, static_cast<WORD>(color));
 }
 

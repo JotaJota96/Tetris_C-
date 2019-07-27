@@ -37,12 +37,13 @@ public:
     void dibujarPieza();
     void borrarPieza();
 
-    void GoToXY(int x, int y);
-    void OcultarCursor();
-
     void mostrarTablero();
     void mostrarGameOver();
+    void mostrarPuntaje(int puntaje);
 
+    void GoToXY(int x, int y);
+    void OcultarCursor();
+    void cambiarColor(int color);
 };
 
 #endif // JUEGO_H

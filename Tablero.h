@@ -33,7 +33,7 @@ public:
     void piezaMover(Direccion dir);
 
     void piezaRotar(bool sentidoHorario);
-    void eliminarFilasCompletas();
+    int eliminarFilasCompletas();
 };
 
 #endif // TABLERO_H

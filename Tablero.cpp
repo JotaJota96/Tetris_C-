@@ -162,8 +162,10 @@ void Tablero::piezaRotar(bool sentidoHorario){
     }
 }
 
-void Tablero::eliminarFilasCompletas(){
+int Tablero::eliminarFilasCompletas(){
     bool sePuedeBorrar;
+    int lineasEliminadas = 0;
+
     for (int y = alto-1; y > 0; y--){
         sePuedeBorrar = true;
         for (int x = 0; sePuedeBorrar && x < ancho; x++){
@@ -171,6 +173,7 @@ void Tablero::eliminarFilasCompletas(){
         }
 
         if (sePuedeBorrar){
+            lineasEliminadas++;
             for (int i = y; i > 0; i--){
                 for (int j = 0; j < ancho; j++){
                     tablero[i][j] = tablero[i-1][j];
@@ -183,6 +186,7 @@ void Tablero::eliminarFilasCompletas(){
         }
 
     }
+    return lineasEliminadas;
 }
 
 
