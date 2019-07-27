@@ -8,7 +8,7 @@ using namespace std;
 int main(){
 
     Juego* j = new Juego();
-    j->pruebas();
+    j->jugarPartida();
 
     return 0;
 }

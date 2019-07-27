@@ -22,7 +22,7 @@ Juego::Juego(){
     GoToXY(BORDE_IZQUIERDO, BORDE_INFERIOR+1);
 }
 
-void Juego::pruebas(){
+void Juego::jugarPartida(){
     tablero->nuevaPieza();
     OcultarCursor();
 
@@ -31,39 +31,29 @@ void Juego::pruebas(){
     while (true){
         if (kbhit()){
             char tecla = getch();
-
             if (tecla == -32) continue;
+
+            borrarPieza();
 
             switch (tecla) {
             case FLECHA_ARRIBA:
-                borrarPieza();
                 tablero->piezaMover(ARRIBA);
-                dibujarPieza();
                 break;
             case FLECHA_ABAJO:
-                borrarPieza();
                 tablero->piezaMover(ABAJO);
-                dibujarPieza();
                 break;
             case FLECHA_DERECHA:
-                borrarPieza();
                 tablero->piezaMover(DERECHA);
                 dibujarPieza();
                 break;
             case FLECHA_IZQUIERDA:
-                borrarPieza();
                 tablero->piezaMover(IZQUIERDA);
-                dibujarPieza();
                 break;
             case TECLA_ROTAR_DERECHA:
-                borrarPieza();
                 tablero->piezaRotar(true);
-                dibujarPieza();
                 break;
             case TECLA_ROTAR_iZQUIERDA:
-                borrarPieza();
                 tablero->piezaRotar(false);
-                dibujarPieza();
                 break;
             case TECLA_FIJAR_PIEZA:
                 tablero->fijarPieza();
@@ -74,9 +64,9 @@ void Juego::pruebas(){
                     mostrarGameOver();
                     return;
                 }
-                dibujarPieza();
                 break;
             }
+            dibujarPieza();
         }
     }
 }

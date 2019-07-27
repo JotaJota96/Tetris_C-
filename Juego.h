@@ -32,7 +32,7 @@ private:
     Tablero* tablero;
 public:
     Juego();
-    void pruebas();
+    void jugarPartida();
 
     void dibujarPieza();
     void borrarPieza();
