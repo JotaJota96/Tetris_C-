@@ -37,40 +37,22 @@ void Juego::pruebas(){
             switch (tecla) {
             case FLECHA_ARRIBA:
                 borrarPieza();
-                tablero->piezaPuedeIrAArriba();
+                tablero->piezaMover(ARRIBA);
                 dibujarPieza();
                 break;
             case FLECHA_ABAJO:
                 borrarPieza();
-                tablero->piezaPuedeIrAAbajo();
+                tablero->piezaMover(ABAJO);
                 dibujarPieza();
-                /*
-                if (tablero->piezaPuedeBajar()){
-                    borrarPieza();
-                    tablero->bajarPieza();
-                    dibujarPieza();
-                }else{
-                    tablero->fijarPieza();
-
-                    tablero->eliminarFilasCompletas();
-                    mostrarTablero();
-
-                    if ( ! tablero->nuevaPieza()){
-                        mostrarGameOver();
-                        return;
-                    }
-                    dibujarPieza();
-                }
-                */
                 break;
             case FLECHA_DERECHA:
                 borrarPieza();
-                tablero->piezaPuedeIrALaDerecha();
+                tablero->piezaMover(DERECHA);
                 dibujarPieza();
                 break;
             case FLECHA_IZQUIERDA:
                 borrarPieza();
-                tablero->piezaPuedeIrALaIzquierda();
+                tablero->piezaMover(IZQUIERDA);
                 dibujarPieza();
                 break;
             case TECLA_ROTAR_DERECHA:
@@ -93,28 +75,6 @@ void Juego::pruebas(){
                     return;
                 }
                 dibujarPieza();
-
-                /*
-                while (true){
-                    if (tablero->piezaPuedeBajar()){
-                        borrarPieza();
-                        tablero->bajarPieza();
-                        dibujarPieza();
-                    }else{
-                        tablero->fijarPieza();
-
-                        tablero->eliminarFilasCompletas();
-                        mostrarTablero();
-
-                        if ( ! tablero->nuevaPieza()){
-                            mostrarGameOver();
-                            return;
-                        }
-                        dibujarPieza();
-                        break;
-                    }
-                }
-                */
                 break;
             }
         }

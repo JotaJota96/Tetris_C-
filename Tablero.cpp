@@ -27,26 +27,24 @@ Tablero::~Tablero(){
     delete this->cxy;
 }
 
+///////////////////////////////////////////////////////////////////////////////////
 Coordenada* Tablero::getCoordenada(){
     return this->cxy;
 }
-
 int Tablero::getAlto(){
     return alto;
 }
-
 int Tablero::getAncho(){
     return ancho;
 }
-
 int Tablero::get(int x, int y){
     return tablero[y][x];
 }
-
 Pieza* Tablero::getPieza(){
     return this->pieza;
 }
 
+///////////////////////////////////////////////////////////////////////////////////
 bool Tablero::nuevaPieza(){
     if (this->pieza != NULL){
         delete this->pieza;
@@ -95,20 +93,6 @@ void Tablero::fijarPieza(){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-bool Tablero::piezaPuedeBajar(){
-    for (int y = pieza->getDimensiones()-1; y >=0 ; y--){
-        for (int x = 0; x < pieza->getDimensiones(); x++){
-            if (pieza->existeEn(x, y)){
-                if (cxy->getY() + y + 1 == alto ||
-                        tablero[cxy->getY() + y + 1][cxy->getX() + x] != 0){
-                    return false;
-                }
-            }
-        }
-    }
-    return true;
-}
-
 bool Tablero::piezaPuedeExistir(){
     for (int y = 0; y < pieza->getDimensiones(); y++){
         for (int x = 0; x < pieza->getDimensiones(); x++){
@@ -126,73 +110,37 @@ bool Tablero::piezaPuedeExistir(){
     return true;
 }
 
-///////////////////////////////////////////////////////////////////////////////////
-bool Tablero::piezaPuedeIrAArriba(){
-    for (int x = 0; x < pieza->getDimensiones(); x++){
-        for (int y = 0; y < pieza->getDimensiones(); y++){
-            if (pieza->existeEn(x, y)){
-                if (cxy->getY() + y - 1 < 0){
-                    return false;
-                }
-                if (tablero[cxy->getY() + y -1][cxy->getX()+x] != 0){
-                    return false;
-                }
-            }
-        }
-    }
-    cxy->up();
-    return true;
-}
+void Tablero::piezaMover(Direccion dir){
+    // cambia de lugar la pieza
+    // si la pieza puede existir en la nueva ubicacion finaliza
+    // de lo contrario deshace el movimiento
 
-bool Tablero::piezaPuedeIrAAbajo(){
-    for (int x = 0; x < pieza->getDimensiones(); x++){
-        for (int y = 0; y < pieza->getDimensiones(); y++){
-            if (pieza->existeEn(x, y)){
-                if (cxy->getY() + y + 1 >= alto){
-                    return false;
-                }
-                if (tablero[cxy->getY() + y +1][cxy->getX()+x] != 0){
-                    return false;
-                }
-            }
+    switch (dir) {
+    case ARRIBA:
+        this->cxy->up();
+        if ( ! piezaPuedeExistir()){
+            this->cxy->down();
         }
-    }
-    cxy->down();
-    return true;
-}
-
-bool Tablero::piezaPuedeIrALaIzquierda(){
-    for (int x = 0; x < pieza->getDimensiones(); x++){
-        for (int y = 0; y < pieza->getDimensiones(); y++){
-            if (pieza->existeEn(x, y)){
-                if (cxy->getX() + x - 1 < 0){
-                    return false;
-                }
-                if (tablero[cxy->getY() + y][cxy->getX()+x-1] != 0){
-                    return false;
-                }
-            }
+        break;
+    case ABAJO:
+        this->cxy->down();
+        if ( ! piezaPuedeExistir()){
+            this->cxy->up();
         }
-    }
-    cxy->left();
-    return true;
-}
-
-bool Tablero::piezaPuedeIrALaDerecha(){
-    for (int x = pieza->getDimensiones()-1; x >= 0 ; x--){
-        for (int y = 0; y < pieza->getDimensiones(); y++){
-            if (pieza->existeEn(x, y)){
-                if (cxy->getX() + x + 1 > ancho-1){
-                    return false;
-                }
-                if (tablero[cxy->getY() + y][cxy->getX()+x+1] != 0){
-                    return false;
-                }
-            }
+        break;
+    case DERECHA:
+        this->cxy->right();
+        if ( ! piezaPuedeExistir()){
+            this->cxy->left();
         }
+        break;
+    case IZQUIERDA:
+        this->cxy->left();
+        if ( ! piezaPuedeExistir()){
+            this->cxy->right();
+        }
+        break;
     }
-    cxy->right();
-    return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

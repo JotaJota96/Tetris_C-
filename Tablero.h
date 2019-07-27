@@ -6,6 +6,8 @@ using namespace std;
 #include "Pieza.h"
 #include "Coordenada.h"
 
+enum Direccion {ARRIBA, ABAJO, DERECHA, IZQUIERDA};
+
 class Tablero{
 private:
     int** tablero;
@@ -23,17 +25,12 @@ public:
     int getAncho();
     Pieza* getPieza();
     Coordenada* getCoordenada();
+
     bool nuevaPieza();
-    void bajarPieza();
     void fijarPieza();
 
-    bool piezaPuedeBajar();
     bool piezaPuedeExistir();
-
-    bool piezaPuedeIrAArriba();
-    bool piezaPuedeIrAAbajo();
-    bool piezaPuedeIrALaIzquierda();
-    bool piezaPuedeIrALaDerecha();
+    void piezaMover(Direccion dir);
 
     void piezaRotar(bool sentidoHorario);
     void eliminarFilasCompletas();
