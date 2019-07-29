@@ -30,6 +30,7 @@ void Juego::jugarPartida(){
 
     dibujarPieza();
     mostrarPuntaje(puntuacion);
+    mostrarColaDePiezas();
 
     while (true){
         if (kbhit()){
@@ -58,6 +59,10 @@ void Juego::jugarPartida(){
             case TECLA_ROTAR_iZQUIERDA:
                 tablero->piezaRotar(false);
                 break;
+            case TECLA_CAMBIAR_PIEZA:
+                tablero->alternarPieza();
+                mostrarColaDePiezas();
+                break;
             case TECLA_FIJAR_PIEZA:
                 dibujarPieza();
                 tablero->fijarPieza();
@@ -78,11 +83,11 @@ void Juego::jugarPartida(){
                     mostrarPuntaje(puntuacion);
                 }
 
-
                 if ( ! tablero->nuevaPieza()){
                     mostrarGameOver();
                     return;
                 }
+                mostrarColaDePiezas();
                 break;
             }
             dibujarPieza();
@@ -127,6 +132,41 @@ void Juego::borrarPieza(){
     GoToXY(0, BORDE_INFERIOR+1);
 }
 
+void Juego::mostrarColaDePiezas(){
+    GoToXY(BORDE_DERECHO+3, BORDE_SUPERIOR+4);
+    printf("Alternativas:");
+
+    for (int y = 0; y < 8; y++){
+        for (int x = 0; x < 4; x++){
+            GoToXY(BORDE_DERECHO+4 +x*2, BORDE_SUPERIOR+6 + y);
+            printf("%c%c", 32, 32);
+        }
+    }
+
+    int t = 0;
+    Pieza** cola = tablero->getColaDePiezas(t);
+    int dimPieza;
+    int j = 0;
+
+    for (int i = t-1; i > 0; i--){
+        cambiarColor(cola[i]->getColor());
+        dimPieza = cola[i]->getDimensiones();
+
+        for (int y = 0; y < dimPieza; y++){
+            for (int x = 0; x < dimPieza; x++){
+                if (cola[i]->existeEn(x, y)){
+                    GoToXY(BORDE_DERECHO+4 +x*2, BORDE_SUPERIOR+6 + j);
+                    printf("%c%c", CHAR_PIEZA, CHAR_PIEZA);
+                }
+            }
+            j++;
+        }
+        j++;
+    }
+    GoToXY(0, BORDE_INFERIOR+1);
+    cambiarColor(15);
+}
+
 ////////////////////////////////////////////////////////////////////
 void Juego::mostrarTablero(){
     for (int y = tablero->getAlto()-1; y >= 0; y--){
@@ -156,7 +196,7 @@ void Juego::mostrarGameOver(){
 
 void Juego::mostrarPuntaje(int puntaje){
     cambiarColor(15);
-    GoToXY(BORDE_DERECHO+3, BORDE_SUPERIOR+1);
+    GoToXY(BORDE_DERECHO+3, BORDE_SUPERIOR+2);
     printf("Puntaje: %d", puntaje);
     GoToXY(0, BORDE_INFERIOR+1);
 }

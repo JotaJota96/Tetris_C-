@@ -40,6 +40,7 @@ public:
     void mostrarTablero();
     void mostrarGameOver();
     void mostrarPuntaje(int puntaje);
+    void mostrarColaDePiezas();
 
     void GoToXY(int x, int y);
     void OcultarCursor();

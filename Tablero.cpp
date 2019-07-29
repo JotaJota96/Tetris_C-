@@ -3,34 +3,69 @@
 #include<time.h>
 
 Tablero::Tablero(const int _alto, const int _ancho){
+    // inicializa las dimensiones del tablero y la coordenada para la pieza actual
     this->alto = _alto;
     this->ancho = _ancho;
-    this->pieza = NULL;
     this->cxy = new Coordenada();
-    tipoPiezaAnterior = -1;
+    // inicializa el arreglo de planificacion de piezas
+    for (int i = 0; i < 3; i++){
+        colaDePiezas[i] =NULL;
+    }
 
-    tablero = new int*[alto];
-    for (int i = 0; i < alto; i++){
-        tablero[i] = new int[ancho];
-        for (int j = 0; j < ancho; j++){
+    // genera el tablero con las dimensiones necesarias
+    tablero = new int*[alto]; // array de filas
+    for (int i = 0; i < alto; i++){ // para cada fila
+        tablero[i] = new int[ancho]; // crea el array de columnas
+        for (int j = 0; j < ancho; j++){  // nicializa todo el arreglo en 0
             tablero[i][j] = 0;
         }
     }
-    srand(time(NULL));
+    srand(time(NULL)); // inicializa la generacion de numeros aleatorios
+
+    TipoPieza tipoNuevaPieza; // tipo de la nueva pieza
+    bool seguirBuscandoNuevaPieza = true;
+    for (int i = 0; i < 3; i++){
+        do {
+            seguirBuscandoNuevaPieza = false;
+            switch (rand()%7) {
+            case 0: tipoNuevaPieza = L; break;
+            case 1: tipoNuevaPieza = J; break;
+            case 2: tipoNuevaPieza = Z; break;
+            case 3: tipoNuevaPieza = S; break;
+            case 4: tipoNuevaPieza = I; break;
+            case 5: tipoNuevaPieza = O; break;
+            case 6: tipoNuevaPieza = T; break;
+            }
+
+            for (int i = 0; i < 3; i++){
+                if (this->colaDePiezas[i] != NULL && tipoNuevaPieza == this->colaDePiezas[i]->getTipo()){
+                    seguirBuscandoNuevaPieza = true;
+                    break;
+                }
+            }
+        } while (seguirBuscandoNuevaPieza);
+
+        colaDePiezas[i] = new Pieza(tipoNuevaPieza);
+    }
 }
 
 Tablero::~Tablero(){
+    // elimina el tablero
     for (int i = 0; i < alto; i++){
         delete this->tablero[i];
     }
     delete this->tablero;
+    // elimina la coordenada
     delete this->cxy;
+    // elimina el arreglo de planificacion de piezas
+    for (int i = 0; i < 3; i++){
+        if (colaDePiezas[i] != NULL){
+            delete this->colaDePiezas[i];
+        }
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-Coordenada* Tablero::getCoordenada(){
-    return this->cxy;
-}
 int Tablero::getAlto(){
     return alto;
 }
@@ -40,63 +75,78 @@ int Tablero::getAncho(){
 int Tablero::get(int x, int y){
     return tablero[y][x];
 }
+Coordenada* Tablero::getCoordenada(){
+    return this->cxy;
+}
 Pieza* Tablero::getPieza(){
-    return this->pieza;
+    return this->colaDePiezas[0];
+}
+Pieza** Tablero::getColaDePiezas(int &tam){
+    tam = 3;
+    return &colaDePiezas[0];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 bool Tablero::nuevaPieza(){
-    if (this->pieza != NULL){
-        delete this->pieza;
-    }
+    // si no hay instancia de Coordenada, genera una
     if (this->cxy == NULL){
         this->cxy = new Coordenada();
     }
 
-    int nueva;
+    // el tipo de la nueva pieza debe ser diferente a las que se encuentran actualmente en la cola de  proximas piezas
+    TipoPieza tipoNuevaPieza; // tipo de la nueva pieza
+    bool seguirBuscandoNuevaPieza = true;
     do {
-        nueva = rand()%7;
-    }while (nueva == tipoPiezaAnterior);
+        seguirBuscandoNuevaPieza = false;
+        switch (rand()%7) {
+        case 0: tipoNuevaPieza = L; break;
+        case 1: tipoNuevaPieza = J; break;
+        case 2: tipoNuevaPieza = Z; break;
+        case 3: tipoNuevaPieza = S; break;
+        case 4: tipoNuevaPieza = I; break;
+        case 5: tipoNuevaPieza = O; break;
+        case 6: tipoNuevaPieza = T; break;
+        }
 
-    tipoPiezaAnterior = nueva;
+        for (int i = 0; i < 3; i++){
+            if (tipoNuevaPieza == this->colaDePiezas[i]->getTipo()){
+                seguirBuscandoNuevaPieza = true;
+                break;
+            }
+        }
+    } while (seguirBuscandoNuevaPieza);
 
-    switch (nueva) {
-    case 0: this->pieza = new Pieza(L); break;
-    case 1: this->pieza = new Pieza(J); break;
-    case 2: this->pieza = new Pieza(Z); break;
-    case 3: this->pieza = new Pieza(S); break;
-    case 4: this->pieza = new Pieza(I); break;
-    case 5: this->pieza = new Pieza(O); break;
-    case 6: this->pieza = new Pieza(T); break;
+    delete colaDePiezas[0];
+    for (int i = 1; i < 3; i++){
+        colaDePiezas[i-1] = colaDePiezas[i];
     }
+    colaDePiezas[2] = new Pieza(tipoNuevaPieza);
 
-    this->cxy->setX(ancho /2 - this->pieza->getDimensiones() /2);
+    this->cxy->setX(ancho /2 - this->colaDePiezas[0]->getDimensiones() /2);
     this->cxy->setY(0);
 
     if ( ! piezaPuedeExistir()){
-        delete pieza;
         return false;
     }
     return true;
 }
 
 void Tablero::fijarPieza(){
-    for (int y = 0; y < pieza->getDimensiones(); y++){
-        for (int x = 0; x < pieza->getDimensiones(); x++){
-            if (pieza->existeEn(x, y)){
-                tablero[cxy->getY() + y][cxy->getX() + x] = pieza->getColor();
+    for (int y = 0; y < this->colaDePiezas[0]->getDimensiones(); y++){
+        for (int x = 0; x < this->colaDePiezas[0]->getDimensiones(); x++){
+            if (this->colaDePiezas[0]->existeEn(x, y)){
+                tablero[cxy->getY() + y][cxy->getX() + x] = this->colaDePiezas[0]->getColor();
             }
         }
     }
-    delete pieza;
-    pieza = NULL;
+    delete this->colaDePiezas[0];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 bool Tablero::piezaPuedeExistir(){
-    for (int y = 0; y < pieza->getDimensiones(); y++){
-        for (int x = 0; x < pieza->getDimensiones(); x++){
-            if (pieza->existeEn(x, y)){
+    for (int y = 0; y < this->colaDePiezas[0]->getDimensiones(); y++){
+        for (int x = 0; x < this->colaDePiezas[0]->getDimensiones(); x++){
+            if (this->colaDePiezas[0]->existeEn(x, y)){
                 if (cxy->getY() + y >= alto ||
                         cxy->getY() + y < 0 ||
                         cxy->getX() + x < 0 ||
@@ -143,23 +193,34 @@ void Tablero::piezaMover(Direccion dir){
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////////
 void Tablero::piezaRotar(bool sentidoHorario){
     if (sentidoHorario){
-        pieza->rotar();
+        this->colaDePiezas[0]->rotar();
         if ( ! piezaPuedeExistir()){
-            pieza->rotar();
-            pieza->rotar();
-            pieza->rotar();
+            this->colaDePiezas[0]->rotar();
+            this->colaDePiezas[0]->rotar();
+            this->colaDePiezas[0]->rotar();
         }
     }else{
-        pieza->rotar();
-        pieza->rotar();
-        pieza->rotar();
+        this->colaDePiezas[0]->rotar();
+        this->colaDePiezas[0]->rotar();
+        this->colaDePiezas[0]->rotar();
         if ( ! piezaPuedeExistir()){
-            pieza->rotar();
+            this->colaDePiezas[0]->rotar();
         }
     }
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+void Tablero::alternarPieza(){
+    Pieza* aux;
+    do{
+        aux = this->colaDePiezas[0];
+        for (int i = 1; i < 3; i++){
+            this->colaDePiezas[i-1] = this->colaDePiezas[i];
+        }
+        this->colaDePiezas[2] = aux;
+    } while ( ! piezaPuedeExistir());
 }
 
 int Tablero::eliminarFilasCompletas(){

@@ -13,26 +13,27 @@ private:
     int** tablero;
     int alto;
     int ancho;
-    Pieza* pieza;
+    Pieza* colaDePiezas[3];
     Coordenada* cxy;
-    int tipoPiezaAnterior;
 public:
     Tablero(const int _alto, const int _ancho);
     ~Tablero();
 
-    int get(int x, int y);
     int getAlto();
     int getAncho();
-    Pieza* getPieza();
+    int get(int x, int y);
     Coordenada* getCoordenada();
+    Pieza* getPieza();
+    Pieza** getColaDePiezas(int &tam);
 
     bool nuevaPieza();
     void fijarPieza();
 
     bool piezaPuedeExistir();
     void piezaMover(Direccion dir);
-
     void piezaRotar(bool sentidoHorario);
+
+    void alternarPieza();
     int eliminarFilasCompletas();
 };
 
