@@ -37,6 +37,7 @@ public:
     void dibujarPieza();
     void borrarPieza();
 
+    void mostrarBordes();
     void mostrarTablero();
     void mostrarGameOver();
     void mostrarPuntaje(int puntaje);

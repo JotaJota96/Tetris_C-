@@ -5,25 +5,33 @@ Juego::Juego(){
     this->posTablero = new Coordenada(BORDE_IZQUIERDO+2,BORDE_SUPERIOR+1);
 
     OcultarCursor();
-    cambiarColor(15);
-
-    GoToXY(BORDE_IZQUIERDO, BORDE_SUPERIOR); printf(" %c", 220);
-    GoToXY(BORDE_DERECHO,   BORDE_SUPERIOR); printf("%c ", 220);
-    GoToXY(BORDE_IZQUIERDO, BORDE_INFERIOR); printf(" %c", 223);
-    GoToXY(BORDE_DERECHO,   BORDE_INFERIOR); printf("%c ", 223);
-
-    for (int i = BORDE_IZQUIERDO+2; i < BORDE_DERECHO; i+=2){
-        GoToXY(i, BORDE_SUPERIOR); printf("%c%c", 219, 219);
-        GoToXY(i, BORDE_INFERIOR); printf("%c%c", 219, 219);
-    }
-    for (int i = BORDE_SUPERIOR+1; i < BORDE_INFERIOR; i++){
-        GoToXY(BORDE_IZQUIERDO, i); printf("%c%c", 219, 219);
-        GoToXY(BORDE_DERECHO,   i); printf("%c%c", 219, 219);
-    }
-    GoToXY(BORDE_IZQUIERDO, BORDE_INFERIOR+1);
 }
 
 void Juego::jugarPartida(){
+
+    cambiarColor(2);
+    cout << endl;
+    cout << "Informacion: Utilize las siguientes teclas para jugar" << endl;
+    cambiarColor(11);
+    cout << "- Flechas del teclado para mover las piezas en todas las direcciones." << endl;
+    cout << "- 'a' y 'd' para rotar las piezas." << endl;
+    cout << "- 's' para fijar la pieza en la posicion actual." << endl;
+    cout << "- 'w' para alternar entre las proximas piezas." << endl;
+    cout << endl;
+
+    cambiarColor(2);
+    cout << "Objetivo del juego:" << endl;
+    cambiarColor(11);
+    cout << "Lograr dejar el espacio de juego totalmente vacio, es decir, sin ningun resto de piezas" << endl;
+    cout << "(Aun no se ha implementado la verificacion de si se logro el objetivo)" << endl;
+    cout << endl;
+
+    cambiarColor(15);
+    system("PAUSE");
+    system("CLS");
+
+
+    mostrarBordes();
     int puntuacion = 0;
     tablero->nuevaPieza();
     OcultarCursor();
@@ -168,6 +176,24 @@ void Juego::mostrarColaDePiezas(){
 }
 
 ////////////////////////////////////////////////////////////////////
+void Juego::mostrarBordes(){
+    cambiarColor(15);
+
+    GoToXY(BORDE_IZQUIERDO, BORDE_SUPERIOR); printf(" %c", 220);
+    GoToXY(BORDE_DERECHO,   BORDE_SUPERIOR); printf("%c ", 220);
+    GoToXY(BORDE_IZQUIERDO, BORDE_INFERIOR); printf(" %c", 223);
+    GoToXY(BORDE_DERECHO,   BORDE_INFERIOR); printf("%c ", 223);
+
+    for (int i = BORDE_IZQUIERDO+2; i < BORDE_DERECHO; i+=2){
+        GoToXY(i, BORDE_SUPERIOR); printf("%c%c", 219, 219);
+        GoToXY(i, BORDE_INFERIOR); printf("%c%c", 219, 219);
+    }
+    for (int i = BORDE_SUPERIOR+1; i < BORDE_INFERIOR; i++){
+        GoToXY(BORDE_IZQUIERDO, i); printf("%c%c", 219, 219);
+        GoToXY(BORDE_DERECHO,   i); printf("%c%c", 219, 219);
+    }
+    GoToXY(BORDE_IZQUIERDO, BORDE_INFERIOR+1);
+}
 void Juego::mostrarTablero(){
     for (int y = tablero->getAlto()-1; y >= 0; y--){
     //for (int y = 0; y < tablero->getAlto(); y++){
